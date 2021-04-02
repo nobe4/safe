@@ -30,3 +30,6 @@ build:
 			-X 'main.Commit=${COMMIT}' \
 			-X 'main.Build=${BUILD_TIME}' "\
 		-o ${BUILD_PATH} ${MAIN_PATH}
+
+check:
+	golangci-lint run

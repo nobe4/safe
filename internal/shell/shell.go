@@ -25,12 +25,14 @@ func IsShell() (bool, error) {
 	logger.Debug("Check if running in a shell.")
 
 	logger.Debug("Check os.Stdin stat")
+
 	fi, err := os.Stdin.Stat()
 	if err != nil {
 		return false, err
 	}
 
 	logger.Debug("Use os.Stdin mode.")
+
 	return (fi.Mode()&os.ModeNamedPipe == 0), nil
 }
 
@@ -39,6 +41,7 @@ func getShell() string {
 	logger.Debug("Check currently running shell.")
 
 	logger.Debug("Check $SHELL")
+
 	sh := os.Getenv("SHELL")
 	if sh != "" {
 		logger.Debug("Found $SHELL: " + sh)
@@ -63,6 +66,7 @@ func getShell() string {
 	}
 
 	logger.Warn("Found no shell")
+
 	return ""
 }
 
@@ -85,18 +89,22 @@ func Start(writer io.Writer) error {
 	}
 
 	logger.Debug("Assign the pipes.")
+
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = writer
 	cmd.Stderr = os.Stderr
 
 	logger.Debug("Start the command")
+
 	if err := cmd.Start(); err != nil {
 		return err
 	}
 
 	logger.Debug("Wait for the command to end.")
+
 	err := cmd.Wait()
 
 	fmt.Println(NOTICE_EXIT)
+
 	return err
 }

@@ -51,26 +51,26 @@ func main() {
 		logger.Error(err)
 	}
 }
+
 func run(out io.Writer, useShell bool) error {
 	if useShell {
 		logger.Info("Use a shell.")
 		return shell.Start(out)
-	} else {
-		logger.Info("Use a stdin pipe.")
+	}
 
-		input := bufio.NewScanner(os.Stdin)
+	logger.Info("Use a stdin pipe.")
 
-		for input.Scan() {
-			line := input.Text()
+	input := bufio.NewScanner(os.Stdin)
 
-			logger.Debug("Read a line:", line)
-			out.Write([]byte(line + "\n"))
-		}
+	for input.Scan() {
+		line := input.Text()
 
-		if err := input.Err(); err != nil {
+		logger.Debug("Read a line:", line)
+
+		if _, err := out.Write([]byte(line + "\n")); err != nil {
 			return err
 		}
 	}
 
-	return nil
+	return input.Err()
 }

@@ -12,7 +12,7 @@ import (
 
 // safeWriter impements the Writer struct
 // It writes to out after filtering elements via the regexp re.
-// filter stores the filtering function
+// filter stores the filtering function.
 type safeWriter struct {
 	out    *os.File
 	re     *regexp.Regexp
@@ -36,7 +36,7 @@ func New(filter *string, censor *string, dict *string, threshold *float64) (io.W
 
 	// Set the censor character
 	if censor != nil && *censor != "" {
-		i.censor = byte((*censor)[0])
+		i.censor = (*censor)[0]
 	}
 
 	// If regexp isn't nil and it compiles, use regex filtering.
@@ -49,6 +49,7 @@ func New(filter *string, censor *string, dict *string, threshold *float64) (io.W
 		}
 
 		logger.Info("Use the regexp filter:", *filter)
+
 		i.re = re
 		i.filter = i.regexpFilter
 	}
@@ -56,9 +57,10 @@ func New(filter *string, censor *string, dict *string, threshold *float64) (io.W
 	return i, nil
 }
 
-// nBytes create a slice of n 'X'
+// nBytes create a slice of n 'X'.
 func (i *safeWriter) nBytes(n int) []byte {
 	logger.Debug("Create a slice of", n, i.censor)
+
 	var o []byte
 
 	for x := 0; x < n; x++ {
@@ -68,22 +70,23 @@ func (i *safeWriter) nBytes(n int) []byte {
 	return o
 }
 
-// replaceAll replace all the bytes with X
+// replaceAll replace all the bytes with X.
 func (i *safeWriter) replaceAll(in []byte) []byte {
 	logger.Debug("Replace all bytes in input:", in)
 	return i.nBytes(len(in))
 }
 
-// regexpFilter replace all matches with X
+// regexpFilter replace all matches with X.
 func (i *safeWriter) regexpFilter(in []byte) []byte {
 	logger.Debug("Use regexpFilter with input:", in)
 
 	return i.re.ReplaceAllFunc(in, i.replaceAll)
 }
 
-// entropyFilter replace all the high-entropy strings with X
+// entropyFilter replace all the high-entropy strings with X.
 func (i *safeWriter) entropyFilter(dictName *string, threshold *float64) func([]byte) []byte {
 	logger.Debug("Select entropy parameters.")
+
 	dict, thres := entropy.Select(dictName, threshold)
 
 	return func(in []byte) []byte {

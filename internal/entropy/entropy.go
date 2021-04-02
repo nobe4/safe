@@ -8,23 +8,23 @@ import (
 	"github.com/nobe4/safe/internal/logger"
 )
 
-// References
+// References holds the default dictionary and thresholds.
 var (
-	references = map[string]struct {
+	references = map[string]struct { //nolint:checknoglobals
 		dict      []byte
 		threshold float64
 	}{
 		"hex": {
 			dict:      []byte("1234567890abcdefABCDEF"),
-			threshold: 3.0,
+			threshold: 3.0, // nolint:mnd
 		},
 		"base64": {
 			dict:      []byte("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="),
-			threshold: 3.5,
+			threshold: 3.5, // nolint:mnd
 		}, "ascii": {
 			// Printable ASCII characters
 			dict:      []byte(`ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=!"#$%&'()*,-.:;<>?@[]^_\{|}~` + "`"),
-			threshold: 3.5,
+			threshold: 3.5, // nolint:mnd
 		},
 	}
 )
@@ -35,11 +35,12 @@ func List() string {
 	for n := range references {
 		r = append(r, n)
 	}
+
 	return strings.Join(r, " ")
 }
 
 func Select(name *string, threshold *float64) ([]byte, float64) {
-	logger.Debug("Select dictionnary and threshold.")
+	logger.Debug("Select dictionary and threshold.")
 
 	// Default to ascii
 	dict := references["ascii"].dict
@@ -69,6 +70,7 @@ func Select(name *string, threshold *float64) ([]byte, float64) {
 	}
 
 	logger.Debug("Using dict", string(dict), "and threshold", thres)
+
 	return dict, thres
 }
 
@@ -86,6 +88,7 @@ func Check(in []byte, dict []byte, thres float64) [][]byte {
 	}
 
 	logger.Debug("Found fields:", found)
+
 	return found
 }
 
@@ -95,7 +98,7 @@ func compute(in []byte, dict []byte) float64 {
 	inLen := float64(len(in))
 	entropy := 0.0
 
-	if inLen > 0.0 {
+	if inLen > 0.0 { // nolint:mnd
 		for _, b := range dict {
 			count := bytes.Count(in, []byte{b})
 			percent := float64(count) / inLen
@@ -107,5 +110,6 @@ func compute(in []byte, dict []byte) float64 {
 	}
 
 	logger.Info("Entropy for", string(in), ":", entropy)
+
 	return entropy
 }

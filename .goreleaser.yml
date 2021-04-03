@@ -5,9 +5,6 @@ before:
   hooks:
     - go mod tidy
 
-gomod:
-  proxy: true
-
 builds:
   - main: ./cmd/safe/safe.go
     binary: safe

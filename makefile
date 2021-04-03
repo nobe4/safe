@@ -6,7 +6,7 @@ GOOS?=darwin
 GOARCH?=amd64
 
 # YYYY.MM.Count
-RELEASE?=2021.04.1
+RELEASE?=2021.04.2
 COMMIT?=$(shell git rev-parse --short HEAD)
 BUILD_TIME?=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
 
@@ -32,8 +32,20 @@ build:
 			-X 'main.Build=${BUILD_TIME}' "\
 		-o ${BUILD_PATH} ${MAIN_PATH}
 
+.PHONY: lint
 lint:
 	golangci-lint run
 
+.PHONY: test
 test:
 	go test ./...
+
+.PHONY: bump
+bump:
+	./build/bump.sh
+	git add makefile
+	git commit -m "Bump version" --edit
+
+.PHONY: tag
+tag:
+	./build/tag.sh

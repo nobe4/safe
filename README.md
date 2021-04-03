@@ -41,9 +41,25 @@ node-dev:
 
 # Installation
 
-TODO: release
+## Release
+
+This is the prefered way.
+
+Check the [lastest release](https://github.com/nobe4/safe/releases/latest).
+
+*Note:* If you use the macOs binary, they are not currently signed. You need to `right-click` and `open` first ([ref](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac)).
+
+## Manual build
 
 Currently you can `git pull` and run `make`.
+
+## Go Get
+
+```bash
+$ go get github.com/nobe4/safe/tree/master/cmd/safe
+```
+
+*Note:* This method doesn't embed version information in the binary, prefer the [release](#release).
 
 # Contribute
 
@@ -55,6 +71,7 @@ Improvement ideas in no particular order:
 - [ ] Add signal handler when terminal closes
 - [ ] Support windows
 - [ ] Improve logger formatting
+- [ ] Sign apple binary
 
 # License
 

@@ -2,7 +2,7 @@ APP=safe
 PROJECT=github.com/nobe4/${APP}
 
 # YYYY.MM.Count
-VERSION?=2021.04.2
+VERSION?=2021.04.3
 COMMIT?=$(shell git rev-parse --short HEAD)
 BUILD_TIME?=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
 

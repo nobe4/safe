@@ -24,7 +24,7 @@ func main() {
 	regexp := flag.String("regexp", "", "a regexp to hide")
 	verbosity := flag.Int("verbosity", 2, "verbosity level (0: nothing, 1: errors, 2: warnings, 3: info, 4: debug)")
 	censor := flag.String("censor", "X", "censor character to use")
-	dict := flag.String("dict", "ascii", "dictionnary for entropy filtering ("+entropy.List()+")")
+	dict := flag.String("dict", "ascii", "dictionary for entropy filtering ("+entropy.List()+")")
 	threshold := flag.Float64("threshold", 3.0, "threshold to apply filtering (debug with verbosity 1)")
 	version := flag.Bool("version", false, "show version information")
 	flag.Parse()

@@ -31,5 +31,5 @@ build:
 			-X 'main.Build=${BUILD_TIME}' "\
 		-o ${BUILD_PATH} ${MAIN_PATH}
 
-check:
+lint:
 	golangci-lint run

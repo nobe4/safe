@@ -24,7 +24,7 @@ var (
 		}, "ascii": {
 			// Printable ASCII characters
 			dict:      []byte(`ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=!"#$%&'()*,-.:;<>?@[]^_\{|}~` + "`"),
-			threshold: 3.5, // nolint:mnd
+			threshold: 4.0, // nolint:mnd
 		},
 	}
 )
@@ -80,7 +80,7 @@ func Check(in []byte, dict []byte, thres float64) [][]byte {
 	found := [][]byte{}
 
 	for _, field := range bytes.Fields(in) {
-		logger.Debug("Working on new field", string(field))
+		logger.Debug("Working on new field '", string(field), "'")
 
 		if compute(field, dict) > thres {
 			found = append(found, field)
@@ -93,7 +93,7 @@ func Check(in []byte, dict []byte, thres float64) [][]byte {
 }
 
 func compute(in []byte, dict []byte) float64 {
-	logger.Debug("Compute entropy for input", string(in))
+	logger.Debug("Compute entropy for input '", string(in), "'")
 
 	inLen := float64(len(in))
 	entropy := 0.0

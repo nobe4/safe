@@ -5,7 +5,8 @@ GO?=go
 GOOS?=darwin
 GOARCH?=amd64
 
-RELEASE?=0.1.0
+# YYYY.MM.Count
+RELEASE?=2021.04.1
 COMMIT?=$(shell git rev-parse --short HEAD)
 BUILD_TIME?=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
 

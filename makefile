@@ -5,8 +5,8 @@ GO?=go
 GOOS?=darwin
 GOARCH?=amd64
 
-RELEASE?=0.0.1
-COMMIT?=$(shell git rev-parse HEAD)
+RELEASE?=0.1.0
+COMMIT?=$(shell git rev-parse --short HEAD)
 BUILD_TIME?=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
 
 BUILD_PATH=./bin/${GOOS}-${GOARCH}/${APP}
@@ -33,3 +33,6 @@ build:
 
 lint:
 	golangci-lint run
+
+test:
+	go test ./...

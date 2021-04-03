@@ -1,51 +1,42 @@
 APP=safe
 PROJECT=github.com/nobe4/${APP}
 
-GO?=go
-GOOS?=darwin
-GOARCH?=amd64
-
 # YYYY.MM.Count
-RELEASE?=2021.04.2
+VERSION?=2021.04.2
 COMMIT?=$(shell git rev-parse --short HEAD)
 BUILD_TIME?=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
 
-BUILD_PATH=./bin/${GOOS}-${GOARCH}/${APP}
-MAIN_PATH=${PROJECT}/cmd/${APP}
-
 default: | build
 
-.PHONY: version
 version:
-	@echo -n ${RELEASE}
+	@echo -n ${VERSION}
 
-.PHONY: app-name
 app-name:
 	@echo -n ${APP}
 
 build:
-	CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} \
-	go build -a \
-		-ldflags="-s -w \
-			-X 'main.Version=${RELEASE}' \
-			-X 'main.Commit=${COMMIT}' \
-			-X 'main.Build=${BUILD_TIME}' "\
-		-o ${BUILD_PATH} ${MAIN_PATH}
+	goreleaser --snapshot --rm-dist
 
-.PHONY: lint
+# Used for manually releasing, normally running in github actions.
+release:
+ifneq ($(shell git symbolic-ref --short HEAD),master)
+	$(error Not on master branch)
+endif
+
+	goreleaser --rm-dist
+
 lint:
 	golangci-lint run
 
-.PHONY: test
 test:
 	go test ./...
 
-.PHONY: bump
 bump:
-	./build/bump.sh
+	./scripts/bump.sh
 	git add makefile
 	git commit -m "Bump version" --edit
 
-.PHONY: tag
 tag:
-	./build/tag.sh
+	./scripts/tag.sh
+
+.PHONY: bump tag lint test app-name version

@@ -14,9 +14,9 @@ import (
 )
 
 var (
-	Version string
-	Commit  string
-	Build   string
+	version string
+	commit  string
+	build   string
 )
 
 func main() {
@@ -26,11 +26,11 @@ func main() {
 	censor := flag.String("censor", "X", "censor character to use")
 	dict := flag.String("dict", "ascii", "dictionary for entropy filtering ("+entropy.List()+")")
 	threshold := flag.Float64("threshold", 3.0, "threshold to apply filtering (debug with verbosity 1)")
-	version := flag.Bool("version", false, "show version information")
+	printVersion := flag.Bool("version", false, "show version information")
 	flag.Parse()
 
-	if version != nil && *version {
-		fmt.Printf("safe: version %s, commit %s, build %s\n", Version, Commit, Build)
+	if printVersion != nil && *printVersion {
+		fmt.Printf("safe: version %s, commit %s, build %s\n", version, commit, build)
 		return
 	}
 
